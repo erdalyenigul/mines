@@ -1,0 +1,53 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+  transition: all .2s ease;
+} 
+
+body {
+  min-height: 100vh;
+  color: #222;
+  background: #fff;
+  line-height: 1.6;
+  font-family: "RockyPirates";
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../images/background-map.svg);
+  background-size: cover;
+  font-family: "RockyPirates";
+}
+
+a {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 890px) {
+  #app {
+    padding: 0;
+  }
+}
