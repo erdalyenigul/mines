@@ -11,8 +11,8 @@
       </p>
       <div class="tasks">
         <ul>
-          <li>💎 Altınları topla ve zengin ol</li>
-          <li>💣 Korsanları bombalarından kaç</li>
+          <li>💰 Altınları topla ve zengin ol</li>
+          <li>💣 Korsanların bombalarından kaç</li>
           <li>⚓ Denizlerin en ünlü korsanı ol!</li>
         </ul>
       </div>

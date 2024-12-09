@@ -2,7 +2,7 @@
   <div class="game-card">
     <div class="modal" v-if="modalInfo.isCashout">
       <div class="modal__content modal__content--win">
-        <span class="text">KAZANILAN ALTIN: {{ currentRound }}</span>
+        <span class="text">KAZANILAN ALTIN: {{ currentRound - 1 }}</span>
       </div>
     </div>
     <div class="modal" v-if="!isBetActive && !isFinished && (typeManual && !typeAuto)">
