@@ -3,11 +3,10 @@
     <div class="containerInfo">
       <div class="info-title">Ahoy Kaptan! 🏴‍☠️</div>
       <p>
-        Denizlerin zenginlikleri seni bekliyor! Sandıkları aç, toplayabildiğin
-        kadar altını topla ve korsanların elinden kaçmayı başar!
+        Kaptan, Define Adası’na hoş geldin! Bu adada seni altınlarla dolu sandıklar ve patlamaya hazır bombalar bekliyor. Amaç basit: Toplayabildiğin kadar altını topla, bombalardan ve korsanlardan kaç ve adanın en zengin korsanı sen ol! 💰💣
       </p>
       <p>
-        Dikkat et, bombalı sandıklar seni yakalar ve korsanlar ganimetini çalar!
+        Cesaretini topla ve maceraya başla! Altınlar seni bekliyor, Kaptan! 🌊✨
       </p>
       <div class="tasks">
         <ul>
