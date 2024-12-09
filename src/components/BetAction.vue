@@ -4,7 +4,7 @@
       <div class="game-mode">
         <div class="game-box-info">
           <div class="text" v-if="!isBetActive">
-            Press “Bet” to <br> start playing!
+            KORSANLAR GELMEDEN HAZİNEYİ TOPLA
             <img src="@/assets/images/bird-talk-arrow.svg" alt="" />
           </div>
           <div class="bird">
@@ -14,152 +14,65 @@
             <img src="@/assets/images/lighthouse.svg" />
           </div>
         </div>
-        <div class="game-box-line">
-          <div class="game-box-type">
-            <button 
-              class="game-box-type-button"
-              :class="{ 'game-box-type--manual': typeManual, 'type-manual-bg-animation': typeManual }" 
-              @click="setType('manual')"
-              :disabled="isBetActive"
-            >Manual</button>
-            <button 
-              class="game-box-type-button"
-              :class="{ 'game-box-type--auto': typeAuto, 'type-auto-bg-animation': typeAuto }" 
-              @click="setType('auto')"
-              :disabled="isBetActive"
-            >Auto</button>
-          </div>
-        </div>
       </div>
-  
+
       <div class="game-box">
         <div class="game-box-line">
           <div class="game-box-col">
-            <button 
-              class="game-box--helper"
-              @click="setBetAmount('max')"
-              :disabled="isBetActive"
-            >max</button>
-            <button 
-              class="game-box--helper"
-              @click="setBetAmount('min')"
-              :disabled="isBetActive"
-            >min</button>
-          </div>
-          <div class="game-box-col">
-            <div class="game-box--amount">
-              <input
-                type="number"
-                v-model="betAmount"
-                @input="betAmountChange()"
-                class="input"
-                :class="{
-                  disabled: isBetActive,
-                }"
-                :disabled="isBetActive" />
-            </div>
-          </div>
-          <div class="game-box-col">
-            <button 
-              class="game-box--helper"
-              @click="setBetAmount('increase')"
-              :disabled="isBetActive"
-            >+</button>
-            <button 
-              class="game-box--helper"
-              @click="setBetAmount('decrease')"
-              :disabled="isBetActive"
-            >-</button>
-          </div>
-        </div>
-        
-        <div class="game-box-line">
-          <div class="game-box-col">
-            <div class="game-box--round" v-if="gameBoxRoundVisible">
-              <a 
-                @click="selectedRound('infinity', null)" 
-                class="selectRound infinity"
-                :class="{ 'game-box--round-selected': selectedRoundInfinity}"
-              ><img src="@/assets/images/infinity.svg" alt=""></a>
-              <a
-                v-for="(item, index) in roundList" 
-                @click="selectedRound(item, index)"
-                class="selectRound"
-                :class="{ 'game-box--round-selected': index+1 === selectedRoundIndex}"
-              >{{ item }}</a>
-            </div>
             <button
-              class="game-box--round-open"
-              @click="gameBoxRoundVisible = !gameBoxRoundVisible"
-              :disabled="isBetActive"
-            >Round <br> {{ isSelectedRound }}</button>
-          </div>
-          <div class="game-box-col">
-            <div class="game-box--msg" v-if="isValidBetAmount">
-              <span class="text" @click="isValidBetAmount = !isValidBetAmount">
-                <img src="@/assets/images/mines-cancel.svg" alt="Close">
-              </span>
-              Bet amount is not between min/max amount
-            </div>
-            <button class="game-box--bet" :class="{ 'game-box--bet-cancel': currentRound == 0 && isBetActive }" @click="action">
-              {{ 
-                isBetActive && (typeManual && !typeAuto) && currentRound > 1 ? 'Cashout' 
-                : isBetActive && (typeManual && !typeAuto) && currentRound == 1 ? 'Cancel'
-                : !isBetActive && (!typeManual && typeAuto) ? 'Start'
-                : isBetActive && (!typeManual && typeAuto) ? 'Stop'
-                : 'Bet' 
+              class="game-box--bet"
+              :class="{
+                'game-box--bet-cancel': currentRound == 0 && isBetActive,
+              }"
+              @click="action"
+            >
+              {{
+                (isBetActive && currentRound > 1) || (isBetActive && currentRound == 1)
+                  ? "TOPLA"
+                  : !isBetActive
+                  ? "OYNA"
+                  : isBetActive
+                  ? "OYNA"
+                  : "OYNA"
               }}
             </button>
           </div>
           <div class="game-box-col">
             <div class="game-box--mines" v-if="gameBoxMinesVisible">
-              <a 
-                v-for="(item, index) in 24" 
-                @click="selectedMines(item, index)" 
+              <a
+                v-for="(item, index) in 24"
+                @click="selectedMines(item, index)"
                 :key="index"
                 class="selectMines"
-                :class="{ 'game-box--mines-selected': index+1 === isSelectedMines}"
-              >{{ item }}</a>
-              <a class="selectMines cancel" @click="gameBoxMinesVisible = !gameBoxMinesVisible"><img src="@/assets/images/mines-cancel.svg" alt=""></a>
+                :class="{
+                  'game-box--mines-selected': index + 1 === isSelectedMines,
+                }"
+                >{{ item }}</a
+              >
+              <a
+                class="selectMines cancel"
+                @click="gameBoxMinesVisible = !gameBoxMinesVisible"
+                ><img src="@/assets/images/mines-cancel.svg" alt=""
+              /></a>
             </div>
-            <button 
+            <button
               class="game-box--mines-open"
               @click="gameBoxMinesVisible = !gameBoxMinesVisible"
               :disabled="isBetActive"
-            >Mines <br> {{ isSelectedMines }}</button>
+            >
+              BOMBA <br />
+              {{ isSelectedMines }}
+            </button>
           </div>
-        </div>  
-      </div>
-  
-      <div class="bet-rules">
-        <div class="bet-rules__rule">
-          <span class="text">Min:</span>
-          <input
-            class="input"
-            type="number"
-            placeholder="Max bet"
-            v-model="minBetAmount"
-            :disabled="isBetActive"
-          >
-        </div>
-        <div class="bet-rules__rule">
-          <span class="text">Max:</span>
-          <input
-            class="input"
-            type="number"
-            placeholder="Max bet"
-            v-model="maxBetAmount"
-            :disabled="isBetActive"
-          >
         </div>
       </div>
-    </div>
+     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref, onMounted } from 'vue';
-import { useMock } from '../stores/mock';
+import { toRefs, ref, onMounted } from "vue";
+import { useMock } from "../stores/mock";
 
 const { bombCount, betAmount } = toRefs(useMock());
 const { setMultiplierList, setType, action } = useMock();
@@ -167,56 +80,34 @@ const {
   isBetActive,
   minBetAmount,
   maxBetAmount,
-  isValidBetAmount,
-  currentRound,
-  typeManual,
-  typeAuto,
-  selectedItemsForAutoMode
+  currentRound,  
+  selectedItemsForAutoMode,
 } = useMock().getters;
 
-const gameBoxRoundVisible = ref(false);
 const gameBoxMinesVisible = ref(false);
 const isSelectedMines = ref(3);
-const isSelectedRound = ref();
-const selectedRoundIndex = ref();
-const selectedRoundInfinity = ref(false);
-
-const roundList = ref(['5','10','50','100','200'])
-
-function selectedRound(item: string, index: number) {
-  gameBoxRoundVisible.value = false;
-  if(item == 'infinity') {
-    selectedRoundInfinity.value = true;
-    selectedRoundIndex.value = -1;
-    isSelectedRound.value = 'infinity';
-  } else {
-    selectedRoundInfinity.value = false;
-    selectedRoundIndex.value = index+1;
-    isSelectedRound.value = item;
-  }
-}
 
 function selectedMines(item: number, index: number) {
   selectedItemsForAutoMode.value = [];
   currentRound.value = 0;
   bombCount.value = item;
-  isSelectedMines.value = index+1;
+  isSelectedMines.value = index + 1;
   gameBoxMinesVisible.value = false;
   setMultiplierList();
 }
 
 function setBetAmount(type) {
-  if(type == 'min') {
-    betAmount.value = minBetAmount.value
+  if (type == "min") {
+    betAmount.value = minBetAmount.value;
   }
-  if(type == 'max') {
-    betAmount.value = maxBetAmount.value
+  if (type == "max") {
+    betAmount.value = maxBetAmount.value;
   }
-  if(type == 'increase') {
-    betAmount.value++
+  if (type == "increase") {
+    betAmount.value++;
   }
-  if(type == 'decrease') {
-    betAmount.value--
+  if (type == "decrease") {
+    betAmount.value--;
   }
 }
 
@@ -225,13 +116,12 @@ function betAmountChange() {
 }
 
 onMounted(() => {
-  setMultiplierList()
-})
-
+  setMultiplierList();
+});
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/css/helpers';
+@import "../assets/css/helpers";
 
 .side {
   width: 100%;
@@ -240,7 +130,9 @@ onMounted(() => {
   margin-right: 100px;
   display: flex;
   align-items: center;
+  z-index: 2;
   filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.8));
+
   @include bp(desktop-s) {
     margin-top: 30px;
     order: 2;
@@ -248,6 +140,7 @@ onMounted(() => {
     margin-right: 0;
     justify-content: center;
   }
+
   @include bp(mobile) {
     max-width: 100%;
     z-index: 3;
@@ -264,6 +157,7 @@ onMounted(() => {
   display: flex;
   width: 100%;
   flex-direction: column;
+
   @include bp(desktop-s) {
     padding: 0 20px;
     margin-bottom: 10px;
@@ -271,34 +165,37 @@ onMounted(() => {
 }
 
 .game-box {
-  background-image: url('@/assets/images/side-game-bg.svg');
-  background-repeat: no-repeat;
-  width:455px;
-  height: 204px;
+  width: 455px;
+  height: 120px;
   padding: 30px 26px;
+  border-radius: 20px;
+  background-color: #00000042;
+
   &--helper {
-    background-image: url('@/assets/images/bet-helper-btn.svg');
+    background-image: url("@/assets/images/bet-helper-btn.svg");
     width: 62px;
     height: 26px;
     font-size: 14px;
-    text-shadow: -1px 1px 0 #fff,
-    1px 1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px -1px 0 #fff;
+    text-shadow: -1px 1px 0 #fff, 1px 1px 0 #fff, 1px -1px 0 #fff,
+      -1px -1px 0 #fff;
+
     &:nth-child(1) {
       margin-bottom: 10px;
     }
+
     &:disabled {
       text-shadow: 0 0 0 #000, 0 0 10px #fff;
       cursor: not-allowed;
       opacity: 0.7;
     }
+
     @include bp(desktop-s) {
-      margin-bottom: 0!important;
+      margin-bottom: 0 !important;
       margin: 0 3px;
       height: 40px;
     }
   }
+
   &--round {
     display: flex;
     width: 46px;
@@ -306,8 +203,9 @@ onMounted(() => {
     position: absolute;
     bottom: 58px;
     left: 15px;
+
     .selectRound {
-      background-image: url('@/assets/images/number-btn-bg.svg');
+      background-image: url("@/assets/images/number-btn-bg.svg");
       width: 46px;
       height: 40px;
       display: flex;
@@ -315,36 +213,43 @@ onMounted(() => {
       justify-content: center;
       margin-bottom: 2px;
       cursor: pointer;
+
       &:hover {
-        background-image: url('@/assets/images/number-btn-hover-bg.svg');
+        background-image: url("@/assets/images/number-btn-hover-bg.svg");
       }
+
       &.infinity {
         img {
           width: 26px;
         }
       }
     }
+
     &-open {
-      background-image: url('@/assets/images/bet-helper2-btn.svg');
+      background-image: url("@/assets/images/bet-helper2-btn.svg");
       width: 77px;
       height: 56px;
       font-size: 17px;
       line-height: 14px;
+
       &:hover {
-        background-image: url('@/assets/images/bet-helper2-btn-hover.svg');
+        background-image: url("@/assets/images/bet-helper2-btn-hover.svg");
       }
+
       &:disabled {
-        background-image: url('@/assets/images/bet-helper2-btn-disabled.svg');
+        background-image: url("@/assets/images/bet-helper2-btn-disabled.svg");
         color: rgba(255, 255, 255, 0.7);
         cursor: not-allowed;
       }
     }
+
     &-selected {
-      background-image: url('@/assets/images/number-btn-hover-bg.svg')!important;
+      background-image: url("@/assets/images/number-btn-hover-bg.svg") !important;
     }
   }
+
   &--msg {
-    background-image: url('@/assets/images/msg-bg.svg');
+    background-image: url("@/assets/images/msg-bg.svg");
     position: absolute;
     top: -5px;
     left: 0;
@@ -356,6 +261,7 @@ onMounted(() => {
     border-radius: 6px;
     padding: 10px;
     text-align: center;
+
     .text {
       position: absolute;
       right: -15px;
@@ -371,32 +277,39 @@ onMounted(() => {
       padding: 5px;
       border-radius: 50%;
       cursor: pointer;
+
       img {
         width: 20px;
       }
     }
   }
+
   &--bet {
-    background-image: url('@/assets/images/bet-btn.svg');
+    background-image: url("@/assets/images/bet-btn.svg");
     width: 210px;
     height: 60px;
-    color: #082A02;
+    color: #082a02;
     text-align: center;
     text-shadow: 0px 1.377px 0px rgba(0, 0, 0, 0.25);
     font-size: 33.041px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
     &-cancel {
-      background-image: url('@/assets/images/bet-cancel-btn.svg');
+      background-image: url("@/assets/images/bet-cancel-btn.svg");
     }
+
     &:hover {
-      text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #49ff18, 0 0 30px #49FF18, 0 0 40px #49FF18, 0 0 55px #49FF18, 0 0 75px #49ff18;
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #49ff18,
+        0 0 30px #49ff18, 0 0 40px #49ff18, 0 0 55px #49ff18, 0 0 75px #49ff18;
     }
+
     @include bp(desktop-s) {
       zoom: 80%;
     }
   }
+
   &--mines {
     display: flex;
     width: 238px;
@@ -404,8 +317,9 @@ onMounted(() => {
     position: absolute;
     bottom: 58px;
     right: 15px;
+
     .selectMines {
-      background-image: url('@/assets/images/number-btn-bg.svg');
+      background-image: url("@/assets/images/number-btn-bg.svg");
       width: 46px;
       height: 40px;
       display: flex;
@@ -413,36 +327,43 @@ onMounted(() => {
       justify-content: center;
       margin-bottom: 2px;
       cursor: pointer;
+
       &:hover {
-        background-image: url('@/assets/images/number-btn-hover-bg.svg');
+        background-image: url("@/assets/images/number-btn-hover-bg.svg");
       }
+
       &.cancel {
         img {
           width: 26px;
         }
       }
     }
+
     &-open {
-      background-image: url('@/assets/images/bet-helper2-btn.svg');
+      background-image: url("@/assets/images/bet-helper2-btn.svg");
       width: 77px;
       height: 56px;
       font-size: 17px;
       line-height: 14px;
+
       &:hover {
-        background-image: url('@/assets/images/bet-helper2-btn-hover.svg');
+        background-image: url("@/assets/images/bet-helper2-btn-hover.svg");
       }
+
       &:disabled {
-        background-image: url('@/assets/images/bet-helper2-btn-disabled.svg');
+        background-image: url("@/assets/images/bet-helper2-btn-disabled.svg");
         color: rgba(255, 255, 255, 0.7);
         cursor: not-allowed;
       }
     }
+
     &-selected {
-      background-image: url('@/assets/images/number-btn-hover-bg.svg')!important;
+      background-image: url("@/assets/images/number-btn-hover-bg.svg") !important;
     }
   }
+
   &--amount {
-    background-image: url('/src/assets/images/bet-amount-bg.svg');
+    background-image: url("/src/assets/images/bet-amount-bg.svg");
     background-repeat: no-repeat;
     width: 246px;
     height: 63px;
@@ -450,49 +371,53 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .input {
       width: 200px;
       background: transparent;
-      border:none;
+      border: none;
       text-align: center;
       font-size: 35px;
       outline: none;
-      text-shadow: -1px 1px 0 #fff,
-      1px 1px 0 #fff,
-      1px -1px 0 #fff,
-      -1px -1px 0 #fff;
+      text-shadow: -1px 1px 0 #fff, 1px 1px 0 #fff, 1px -1px 0 #fff,
+        -1px -1px 0 #fff;
     }
+
     @include bp(desktop-s) {
       width: 110px;
-      background-image: url('/src/assets/images/bet-amount-mobile-bg.svg');
+      background-image: url("/src/assets/images/bet-amount-mobile-bg.svg");
+
       .input {
         width: 100px;
       }
     }
   }
+
   @include bp(desktop-s) {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    width:100%;
+    width: 100%;
     background-size: 105%;
     background-position: center;
     padding: 5px;
-    height: 130px;
+    height: 120px;
   }
+
   @include bp(mobile-small) {
-    height: 160px;
+    height: 100px;
   }
 }
 
 .game-box-line {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   position: relative;
   z-index: 2;
+
   @include bp(desktop-s) {
     margin-bottom: 0;
   }
@@ -502,11 +427,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   position: relative;
+
   &:nth-last-child(1) {
     .game-box--helper {
       font-size: 24px;
     }
   }
+
   button {
     background-repeat: no-repeat;
     background-color: transparent;
@@ -517,16 +444,18 @@ onMounted(() => {
     justify-content: center;
     cursor: pointer;
   }
+
   @include bp(desktop-s) {
     flex-direction: row;
   }
+
   @include bp(mobile-small) {
     flex-direction: column;
   }
 }
 
 .game-box-type {
-  background-image: url('@/assets/images/bet-type-bg.svg');
+  background-image: url("@/assets/images/bet-type-bg.svg");
   background-size: cover;
   width: 402px;
   margin: 0 auto;
@@ -537,14 +466,17 @@ onMounted(() => {
   border-radius: 7px;
   height: 48px;
   overflow: hidden;
+
   &--manual {
-    background-image: url('@/assets/images/bet-type-manual.svg');
+    background-image: url("@/assets/images/bet-type-manual.svg");
   }
+
   &--auto {
-    background-image: url('@/assets/images/bet-type-auto.svg');
+    background-image: url("@/assets/images/bet-type-auto.svg");
   }
+
   @include bp(desktop-s) {
-    width:100%;
+    width: 100%;
   }
 }
 
@@ -561,9 +493,11 @@ onMounted(() => {
   height: 44px;
   border-radius: 7px;
   font-size: 28px;
+
   &:disabled {
     cursor: not-allowed;
   }
+
   @include bp(desktop-s) {
     width: 50%;
   }
@@ -577,16 +511,19 @@ onMounted(() => {
   margin: 0 auto;
   position: relative;
   z-index: 1;
+
   .bird {
     position: absolute;
     left: 0;
     bottom: 0;
   }
+
   .lighthouse {
     position: absolute;
     left: 50%;
     bottom: -20px;
   }
+
   .text {
     width: 205px;
     background-color: #d9d9d9;
@@ -603,12 +540,14 @@ onMounted(() => {
     position: absolute;
     top: -160px;
     left: 0;
+
     img {
       position: absolute;
       bottom: -44px;
       left: 20px;
     }
   }
+
   @include bp(desktop-s) {
     display: none;
   }
@@ -622,20 +561,24 @@ onMounted(() => {
   border-radius: 6px;
   margin-top: 20px;
   color: #fff;
+
   &__rule {
     display: flex;
     width: 50%;
     padding: 10px;
     align-items: center;
-    .text{
+
+    .text {
       font-size: 18px;
       margin-right: 10px;
     }
-    .input{
+
+    .input {
       width: 80%;
       border: 0;
       padding: 5px;
       outline: none;
+
       &:disabled {
         cursor: not-allowed;
       }
@@ -645,18 +588,19 @@ onMounted(() => {
 
 .type-auto-bg-animation {
   animation-name: type-auto-bg-animation;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
 }
 
 .type-manual-bg-animation {
   animation-name: type-manual-bg-animation;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
 }
 
 @keyframes type-auto-bg-animation {
   0% {
     background-position-x: 200px;
   }
+
   100% {
     background-position-x: 0;
   }
@@ -666,9 +610,9 @@ onMounted(() => {
   0% {
     background-position-x: -200px;
   }
+
   100% {
     background-position-x: 0;
   }
 }
-
 </style>

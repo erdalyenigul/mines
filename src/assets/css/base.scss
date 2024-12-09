@@ -27,7 +27,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(../images/background-map.svg);
+  background-image: url(../images/background-map.png);
   background-size: cover;
   font-family: "RockyPirates";
 }
@@ -49,5 +49,6 @@ a {
 @media (max-width: 890px) {
   #app {
     padding: 0;
+    background-position: -350px center;
   }
 }

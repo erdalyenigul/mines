@@ -2,23 +2,20 @@
   <div class="game-card">
     <div class="modal" v-if="modalInfo.isCashout">
       <div class="modal__content modal__content--win">
-        <span class="text">x{{ modalInfo.currentMultiplier }}</span>
-        <span class="text">${{ modalInfo.profit.toFixed(2) }}</span>
+        <span class="text">KAZANILAN ALTIN: {{ currentRound }}</span>
       </div>
     </div>
     <div class="modal" v-if="!isBetActive && !isFinished && (typeManual && !typeAuto)">
       <div class="modal__content modal__content--start">
         <button class="modal__content-button button" @click="action()">
-          Press Bet to Start!
+          OYNA!
         </button>
       </div>
     </div>
     <div class="modal" v-if="modalInfo.isLoss">
       <div class="modal__content modal__content--loss">
-        <span class="text">You missed out!</span>
-        <button class="modal__content-button button" @click="action()">
-          Try Again
-        </button>
+        <span class="text">KORSANLARA YAKALANDIN!</span>
+        <span class="text">KAYBEDILEN ALTIN: {{ currentRound }}</span>
       </div>
     </div>
 
@@ -28,12 +25,12 @@
           v-for="(item, index) in multipliersList"
           class="head-multiple"
           :class="{
-            'head-multiple-won': index < currentRound &&  (typeManual && !typeAuto),
+            'head-multiple-won': index < currentRound,
             'head-multiple-active': currentRound == index + 1
           }"
         >
-          <span class="first-multiple">x{{ item.multiple }} </span>
-          <span>${{ (item.multiple * betAmount).toFixed(2) }} </span>
+          <span class="first-multiple">ALTIN {{ index + 1 }} </span>
+          
         </div>
       </div>
     </div>
@@ -55,7 +52,7 @@
         <div v-if="opened[i] || isFinished">
           <img
             v-if="revealedResults[i] === 'safe'"
-            src="../assets/images/diamond.svg"
+            src="../assets/images/diamond.png"
             alt="" />
           <template v-if="revealedResults[i] === 'bomb'">
             <img src="../assets/images/bomb.svg" alt="" />
@@ -107,6 +104,8 @@ watch(isFinished, (newVal) => {
   max-width: 580px;
   flex-direction: column;
   position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 40px;
   @include bp(desktop-s) {
     width: 100%;
     padding: 0 20px;
@@ -156,13 +155,14 @@ watch(isFinished, (newVal) => {
 .box {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
 
   &__card {
     cursor: pointer;
     position: relative;
     height: 110px;
     max-width: 110px;
-    background-image: url(../assets/images/boxDefault.svg);
+    background-image: url(../assets/images/boxDefault.png);
     background-size: cover;
     overflow: hidden;
     display: flex;
@@ -258,7 +258,7 @@ watch(isFinished, (newVal) => {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    width: 220px;
+    width: 280px;
     font-size: 16px;
     color: #fff;
     background-color: #1a2c38;
@@ -321,7 +321,7 @@ watch(isFinished, (newVal) => {
       padding: 10px 20px;
       border: none;
       border-radius: 4px;
-      font-size: 15px;
+      font-size: 20px;
       font-weight: 600;
       color: #00e701;
       &:hover {

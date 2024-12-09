@@ -137,7 +137,6 @@ export const useMock = defineStore('mock', () => {
     balance.value += profit.value + betAmount.value;
     isBetActive.value = false;
     isFinished.value = true;
-    currentRound.value = 0;
     currentMultiplier.value = 1;
     diamondCount.value = 25 - bombCount.value;
     showTable();
@@ -237,8 +236,6 @@ export const useMock = defineStore('mock', () => {
     }
     if((!typeManual.value && typeAuto.value) && !isBetActive.value) {
       isBetActive.value = true;
-      console.log('Auto Mode Selected Numbers')
-      console.log(selectedItemsForAutoMode.value)
     } else {
       isBetActive.value = false;
       selectedItemsForAutoMode.value = [];
